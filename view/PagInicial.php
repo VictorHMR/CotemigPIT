@@ -19,7 +19,7 @@
 </head>
 <!----------------------------------------Fundo------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-<body style="color:cornsilk" class="corpo">
+<body style="color:snow" class="corpo">
 
 <!----------------------------------------Menu------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <nav class="NavBar">
@@ -29,8 +29,8 @@
                 <div class="nav-center">
 
                 <a style="margin-right: 0.5vw;" class="linkM" id="linkM" href=""> Home</a>
-                <a style="margin-right: 0.5vw;" class="linkM" id="linkM" href=""> Sobre nós</a>
-                <a style="margin-right: 0.5vw;" class="linkM" id="linkM" href=""> Relatar Bug</a>
+                <a style="margin-right: 0.5vw;" class="linkM" id="linkM" href="#curso"> Sobre nós</a>
+                <a style="margin-right: 0.5vw;" class="linkM" id="linkM" href="./view/bug.html"> Relatar Bug</a>
 
 
                 </div>

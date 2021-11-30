@@ -1,0 +1,28 @@
+
+.tempo input[type=radio] {
+  display: none;
+}
+.tempo label i.fa{
+  font-size: 1.5em
+}
+.tempo label i.fa:before {
+  content:'\f005';
+  color: rgb(0, 167, 89);
+}
+.tempo input[type=radio]:checked ~ label i.fa:before {
+  color: #CCC;
+}
+
+.tempo{
+text-align: center;
+}
+.pezin{
+  margin-right: 31%;
+}
+.pezin2{
+  margin-left: 40%;
+}
+.Coment{
+  width: 175px;
+  height: 70px;
+}

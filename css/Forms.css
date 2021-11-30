@@ -1,0 +1,104 @@
+
+/*------------------------------------------------Formulário-------------------------------------------------*/
+.corpo{
+    background: url(../img/Fundo01.png) no-repeat;
+    background-size: contain 100%;
+}
+
+.frmLogin{
+    
+    background-color:#00af66 ;
+    border-radius: 3%;
+    padding: 20px;
+    width: 23%;
+    margin: 2% auto;
+    text-align: start;
+    color: azure;
+    box-shadow: rgb(2, 92, 65) 2px 2px 2px 2px;
+}
+.frmRegistro{
+    width: 40%;
+    margin: 0 auto;
+    background-color:#00af66 ;
+    border-radius: 3%;
+    padding: 20px;
+    margin: 2% auto;
+    text-align: start;
+    color: rgb(255, 255, 255);
+    box-shadow: rgb(2, 92, 65) 2px 2px 2px 2px;
+}
+.frmEdit{
+    width: 40%;
+    margin: 0 auto;
+    background-color:#00af66 ;
+    border-radius: 3%;
+    padding: 20px;
+    margin: 2% auto;
+    text-align: start;
+    color: azure;
+    box-shadow: rgb(2, 92, 65) 2px 2px 2px 2px;
+}
+#botoes{
+    width: 4cm;
+}
+
+.frmCriar{
+    background-color:#00af66 ;
+    border-radius: 3%;
+    padding: 20px;
+    width: 23%;
+    margin: 2% auto;
+    text-align: start;
+    color: azure;
+    box-shadow: rgb(2, 92, 65) 2px 2px 2px 2px;
+}
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------Input-------------------------------------------------*/
+.inputs{
+    margin-bottom: 7%;
+    width: 100%;
+    background-color: transparent;
+    border: rgba(255, 255, 255, 0.103) solid;
+    color: rgba(255, 255, 255, 0.808);
+}
+.inputs::placeholder{
+    color: rgba(255, 255, 255, 0.808);
+
+}
+.inputs:hover{
+    border-bottom: white solid 1px;
+}
+.inputs:focus{
+    border:  0 none;
+    border-bottom: white solid 1px;
+    border-color: #ffffff;
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
+.disable:read-only{
+    background-color: #006e40;
+}
+.selectT:focus{
+    animation: none;
+}
+.selectT *{
+    background-color:#00af66 ;
+}
+.selectT{
+    
+    height: 30px;
+    border: rgba(255, 255, 255, 0.103) solid;
+}
+
+
+
+@keyframes border-animation{
+    0% { width: 0%; }
+    
+    100% { width: 100%}
+    
+}
+
+#mensagem{
+    color: red;
+}
