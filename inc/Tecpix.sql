@@ -10,6 +10,229 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `tecpix` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `tecpix`;
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `prc_filtrarC`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_filtrarC` (IN `p_categoria` VARCHAR(100))  NO SQL
+BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, usuario.telefone, reparo.regiao
+from reparo, usuario
+
+where reparo.status ="Aberto" AND
+reparo.usuario = usuario.usuario AND 
+reparo.categoria = p_categoria;
+      
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_filtrarR`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_filtrarR` (IN `p_regiao` VARCHAR(100))  NO SQL
+BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, usuario.telefone, reparo.regiao
+from reparo, usuario
+
+where reparo.status ="Aberto" AND
+reparo.usuario = usuario.usuario AND 
+reparo.regiao = p_regiao ;
+      
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_filtrarRC`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_filtrarRC` (IN `p_categoria` VARCHAR(100), IN `p_regiao` VARCHAR(100))  NO SQL
+BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, usuario.telefone, reparo.regiao
+from reparo, usuario
+
+where reparo.status ="Aberto" AND
+reparo.usuario = usuario.usuario AND 
+reparo.regiao = p_regiao AND
+reparo.categoria = p_categoria;
+      
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_listarTecnicos`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_listarTecnicos` (IN `p_regiao` VARCHAR(50) CHARSET utf8)  BEGIN
+
+SELECT usuario.nome, usuario.telefone, usuario.idade, sum(avaliacao.nota)/ count(avaliacao.id) as Nota, count(avaliacao.id) as quantidade
+
+from usuario 
+
+join avaliacao on avaliacao.usuario = usuario.usuario
+where usuario.tipo = "Tecnico" and 
+regiao = p_regiao GROUP BY usuario.nome ORDER BY Nota DESC;
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_listarUsuarios`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_listarUsuarios` (IN `p_regiao` VARCHAR(50) CHARSET utf8)  BEGIN
+
+SELECT usuario.nome, usuario.telefone, usuario.idade, sum(avaliacao.nota)/ count(avaliacao.id) as Nota, count(avaliacao.id) as quantidade
+from usuario 
+join avaliacao on avaliacao.usuario = usuario.usuario
+
+where usuario.tipo = "Usuario Comum" and regiao = p_regiao 
+GROUP BY usuario.nome
+ORDER BY Nota;
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosAbertos`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosAbertos` ()  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, usuario.telefone, reparo.regiao
+from reparo, usuario
+
+where reparo.status ="Aberto" AND
+      reparo.usuario = usuario.usuario;
+      
+
+
+
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosAbertosC`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosAbertosC` (IN `p_usuario` VARCHAR(50))  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes,reparo.categoria, reparo.data,reparo.status
+from reparo
+
+where reparo.usuario = p_usuario AND
+reparo.status = "Aberto"
+GROUP BY id;
+      
+
+
+
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosEmAndamento`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosEmAndamento` (IN `p_tecnico` VARCHAR(50))  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, reparo.regiao, usuario.telefone 
+from reparo
+
+join usuario on reparo.usuario = usuario.usuario
+
+where reparo.tecnico = p_tecnico AND
+reparo.status = "Em Andamento" OR
+reparo.tecnico = p_tecnico AND
+reparo.status = "Aguardando Confirmação" OR
+reparo.tecnico = p_tecnico AND
+reparo.status = "Revisar"
+GROUP BY id;
+      
+
+
+
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosEmAndamentoC`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosEmAndamentoC` (IN `p_usuario` VARCHAR(50))  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes,reparo.categoria, reparo.data,reparo.status, usuario.nome as Tecnico, usuario.telefone, usuario.pix
+from reparo
+
+join usuario on reparo.tecnico = usuario.usuario
+
+where reparo.usuario = p_usuario AND
+reparo.status = "Em Andamento" OR
+reparo.usuario = p_usuario AND
+reparo.status = "Aguardando Confirmação" OR
+reparo.usuario = p_usuario AND
+reparo.status = "Revisar"
+GROUP BY id;
+      
+
+
+
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosFinalizados`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosFinalizados` (IN `p_tecnico` VARCHAR(50))  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes, reparo.categoria, reparo.data,reparo.status, usuario.nome as Cliente, usuario.telefone, reparo.regiao, usuario.usuario as usuario, avaliacao.nota, avaliacao.comentario
+from usuario
+
+join reparo on reparo.usuario = usuario.usuario
+left join avaliacao on avaliacao.usuario = reparo.tecnico  AND avaliacao.id_reparo = reparo.id
+
+where 
+reparo.tecnico = p_tecnico AND
+reparo.status ="Aguardando Avaliação" OR
+
+reparo.tecnico = p_tecnico AND
+reparo.status = "Avaliado Pelo Usuario" OR
+
+reparo.tecnico = p_tecnico AND
+reparo.status = "Avaliado Pelo Tecnico" OR
+
+reparo.tecnico = p_tecnico AND
+reparo.status = "Finalizado"
+GROUP BY id ORDER BY reparo.status;
+      
+
+
+
+
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_pedidosFinalizadosCP`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_pedidosFinalizadosCP` (IN `p_usuario` VARCHAR(50))  BEGIN
+
+
+SELECT reparo.id, reparo.detalhes,reparo.categoria, reparo.data,reparo.status, usuario.nome as Tecnico, usuario.telefone , usuario.pix, usuario.usuario, avaliacao.comentario, avaliacao.nota
+from reparo
+
+join usuario on reparo.tecnico = usuario.usuario
+left join avaliacao on avaliacao.usuario = reparo.usuario  AND avaliacao.id_reparo = reparo.id
+
+
+where 
+reparo.usuario = p_usuario AND
+reparo.status ="Aguardando Avaliação"  OR
+
+reparo.usuario = p_usuario AND
+reparo.status = "Avaliado Pelo Usuario" OR
+
+reparo.usuario = p_usuario AND
+reparo.status = "Avaliado Pelo Tecnico"  OR
+
+reparo.usuario = p_usuario AND
+reparo.status = "Finalizado"
+GROUP BY id ORDER BY reparo.status;
+      
+
+
+
+
+
+END$$
+
+DELIMITER ;
+
 DROP TABLE IF EXISTS `avaliacao`;
 CREATE TABLE `avaliacao` (
   `id` int NOT NULL,
