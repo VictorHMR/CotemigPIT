@@ -1,5 +1,4 @@
 # PIT
-## Não está hospedado pois não encontrei um free host descente...
 Neste repositório estará disponível meu Projeto de Inovação Tecnologica feitos durante meu estudo no 3 ano do ensino médio.
 
 Ele consiste em básicamente uma plataforma voltada para usuarios de tecnologia, atualmente, quase todo o mundo, nele possuem duas categorais de usuarios, são elas:
